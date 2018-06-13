@@ -2,7 +2,8 @@
 SQLyog Trial v11.01 (32 bit)
 MySQL - 5.7.17-log : Database - myblog
 *********************************************************************
-*/
+*/
+
 
 CREATE DATABASE `myblog` ;
 
