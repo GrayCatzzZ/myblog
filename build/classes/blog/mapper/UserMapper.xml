@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="blog.mapper.UserMapper">
+
+	<insert id="userRegister" parameterType="User" useGeneratedKeys="true" keyProperty="user_id" >
+		INSERT INTO t_user(user_name,user_password,email,state,`code`) 
+		VALUES (#{user_name},#{user_password},#{email},#{state},#{code})
+	</insert>
+	
+	<update id="active" parameterType="String" >
+		update t_user set state = 1 where `code` = #{value}
+	</update>
+	
+	<select id="checkUserName" parameterType="String" resultType="Integer">
+		select count(*) from t_user where user_name = #{user_name}
+	</select>
+	
+	<select id="userLogin" parameterType="User" resultType="int">
+		select count(*) from t_user where user_name = #{user_name} and 
+		user_password = #{user_password}
+	
+	</select>
+	
+	<select id="queryUser" parameterType="String" resultType="User">
+		select 
+			user_id,user_name,email 
+		from 
+			t_user 
+		where 
+			user_name = #{user_name}
+	
+	</select>
+</mapper>

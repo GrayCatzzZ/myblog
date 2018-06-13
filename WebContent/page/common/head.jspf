@@ -1,0 +1,27 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+  <link href="${pageContext.request.contextPath }/lib/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+  <link href="${pageContext.request.contextPath }/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <link href="${pageContext.request.contextPath }/css/main.css" rel="stylesheet" type="text/css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath }/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath }/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath }/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="${pageContext.request.contextPath }/images/logo.svg" color="#222">
+ <script type="text/javascript" src="${pageContext.request.contextPath }/lib/jquery/index.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/lib/fastclick/lib/fastclick.min.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/lib/jquery_lazyload/jquery.lazyload.js"></script> 
+  <script type="text/javascript" src="${pageContext.request.contextPath }/lib/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/lib/velocity/velocity.ui.min.js"></script>  
+  <script type="text/javascript" src="${pageContext.request.contextPath }/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/js/src/utils.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/js/src/motion.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/js/src/affix.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/js/src/schemes/pisces.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/js/src/scrollspy.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/js/src/post-details.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath }/js/src/bootstrap.js"></script>
+ <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath }/static/ueditor1_4_3_3/ueditor.config.js"></script>
+ <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath }/static/ueditor1_4_3_3/ueditor.all.min.js"></script>
+ <script type="text/javascript" charset="utf-8" src="${pageContext.request.contextPath }/static/ueditor1_4_3_3/lang/zh-cn/zh-cn.js"></script>

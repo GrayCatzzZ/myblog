@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="blog.mapper.ArticleMapper">
+	<!-- 获取文章总数 -->
+	<select id="getTotalCount" resultType="Integer">
+		select count(*) from t_article
+	</select>
+	
+	<!-- 获取分类总数 -->
+	<select id="getCategoryTotalCount" resultType="Integer">
+		select count(*) from t_categroy
+	</select>
+	
+	<select id="findArticelForPageBean" resultMap="getArticle">
+		SELECT 
+			art_id,title,CONCAT(SUBSTR(content,1,50),'...') AS content,art_time,t_categroy.cat_id,t_categroy.cat_name
+		FROM 
+			t_article
+		LEFT JOIN  
+			t_categroy 
+		ON 
+			t_article.cat_id = t_categroy.cat_id  
+		ORDER BY 
+			art_time 
+		LIMIT #{index},#{currentCount}
+	</select>
+	
+	<resultMap type="blog.pojo.Article" id="getArticle">
+		<id column="art_id" property="art_id"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="art_time" property="art_time"/>
+		<association property="category" javaType="blog.pojo.Category" column="cat_id">
+			<id column="cat_id" property="cat_id"/>
+			<result column="cat_name" property="cat_name"/>
+		</association>
+		
+	</resultMap>
+	<!-- 根据文章id寻找文章 -->
+	<select id="getArticleById" resultMap="getArticle" parameterType="Integer">
+	SELECT 
+		t_article.cat_id,title,content,art_time,t_categroy.cat_name 
+	FROM 
+		t_article 
+	LEFT JOIN 
+		t_categroy 
+	ON 
+		t_article.cat_id = t_categroy.cat_id 
+	WHERE  
+		art_id = #{art_id}
+	</select>
+	
+	<!-- 当前文章上一篇文章-->
+	<select id="getPreArticleById" resultType="blog.pojo.Article" parameterType="Integer">
+	SELECT
+		art_id,title 
+	FROM 
+		t_article 
+	WHERE 
+		art_id = (SELECT MAX(art_id) FROM t_article WHERE art_id  &lt; #{art_id})	
+	</select>
+	
+	<!-- 当前文章下一篇文章-->
+	<select id="getPostArticleById" resultType="blog.pojo.Article" parameterType="Integer">
+	SELECT
+		art_id,title 
+	FROM 
+		t_article 
+	WHERE 
+		art_id = (SELECT MIN(art_id) FROM t_article WHERE art_id  &gt; #{art_id})	
+	</select>
+	
+	<insert id="writeBlog" parameterType="Map">
+		INSERT INTO 
+			t_article (cat_id,title,content) 
+		VALUES
+			(#{cat_id},#{title},#{content})
+	</insert>
+	
+	<insert id="saveComment" parameterType="blog.pojo.Comment">
+		INSERT INTO 
+			t_comment (user_id,`comment`) 
+		VALUES(#{user_id},#{comment})
+	</insert>
+	<resultMap type="blog.pojo.Comment" id="comment">
+		<id column="com_id" property="comm_id"/>
+		<result column="com_time" property="comm_time"/>
+		<result column="comment" property="comment"/>
+		<association property="user" javaType="blog.pojo.User" column="user_id">
+			<id column="user_id" property="user_id"/>
+			<result column="user_name" property="user_name"/>
+		</association>
+	</resultMap>
+	<select id="findComment" resultMap="comment">
+		SELECT 
+			com_id,t_user.user_id,com_time,`comment` ,user_name 
+		FROM 
+			t_comment 
+		JOIN 
+			t_user 
+		ON 
+			t_user.user_id = t_comment.user_id
+	</select>
+	
+	<!-- 查询评论总条数 -->
+	<select id="getCommentTotalCount" resultType="Integer">
+	 SELECT COUNT(com_id) total_count FROM t_comment
+	</select>
+	
+	<!-- 查询评论by分页 -->
+	<select id="getCommentByPageBean" resultMap="comment">
+		SELECT 
+			com_id,t_user.user_id,com_time,`comment` ,user_name 
+		FROM 
+			t_comment 
+		JOIN 
+			t_user ON t_user.user_id = t_comment.user_id 
+		ORDER BY 
+			com_id DESC 
+		LIMIT #{index},#{currentCount}
+	
+	</select>
+	
+	<!-- 查询所有文章 -->
+	<select id="findAllArticle" resultType="blog.pojo.vo.ArticleVO">
+		SELECT 
+			art_id,title,art_time,t_article.cat_id,cat_name 
+		FROM 
+			t_article 
+		JOIN 
+			t_categroy 
+		ON 
+			t_categroy.cat_id = t_article.cat_id
+	</select>
+	
+	<delete id="deleteBlog" parameterType="Integer">
+		DELETE FROM t_article WHERE art_id = #{id}
+	</delete>
+	
+	<update id="updateArticle" parameterType="blog.pojo.Article">
+		UPDATE 
+			t_article 
+		SET 
+			title=#{title},content=#{content} ,cat_id=#{cat_id}
+		WHERE 
+			art_id = #{art_id}
+	</update>
+	
+	<insert id="addCategory" parameterType="blog.pojo.Category">
+		INSERT INTO t_categroy (cat_name) VALUES (#{cat_name})
+	</insert>
+	
+	<update id="updateCategory" parameterType="blog.pojo.Category">
+		UPDATE t_categroy SET cat_name=#{cat_name} WHERE cat_id=#{cat_id}
+	</update>
+	
+	<select id="getArticleByCatId" parameterType="Integer" resultType="Integer">
+		SELECT COUNT(art_id) FROM t_article WHERE cat_id = #{cat_id}
+	</select>
+	
+	<delete id="deleteCategory" parameterType="Integer">
+		DELETE FROM t_categroy WHERE cat_id = #{cat_id}
+	</delete>
+	<select id="getAllCommentVO" resultType="blog.pojo.vo.CommentVO">
+		SELECT 
+			t_comment.com_id,com_time,`comment`,user_name 
+		from 
+			t_comment 
+		join t_user 
+			on 
+		t_user.user_id = t_comment.user_id
+	</select>
+	
+	<delete id="commentDeleteById" parameterType="Integer">
+		
+		DELETE FROM t_comment WHERE com_id=#{com_id}
+	</delete>
+	
+</mapper>

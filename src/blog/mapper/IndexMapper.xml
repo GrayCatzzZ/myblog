@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="blog.mapper.IndexMapper">
+	<!-- 获取分类 -->
+	<select id="getCategory" resultType="blog.pojo.Category">
+		SELECT 
+			t_categroy.cat_id,cat_name,COUNT(art_id) AS cat_count 
+		FROM 
+			t_categroy 
+		LEFT JOIN 
+			t_article 
+		ON 
+			t_categroy.cat_id = t_article.cat_id 
+		GROUP BY 
+			t_categroy.cat_id
+	</select>
+	
+	<!-- 获取分类文章 -->
+	<select id="getCategory_list" resultType="blog.pojo.Article" parameterType="Integer">
+		SELECT art_id,title,(SELECT DATE_FORMAT(art_time,'%Y-%m-%d')) AS art_time 
+		FROM t_article WHERE cat_id=#{cat_id}	
+	</select>
+	
+	<select id="getAllCategory" resultType="blog.pojo.Category">
+	
+		SELECT cat_id,cat_name FROM t_categroy
+	</select>
+</mapper>
